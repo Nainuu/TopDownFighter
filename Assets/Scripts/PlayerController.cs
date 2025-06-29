@@ -1,6 +1,7 @@
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     private InputAction Move;
     private InputAction Attack;
+
+    public int MaxHealth = 100;
+    public int currentHealth;
+
+    public PlayerHealth healthBar;
+
+
 
     public void Awake()
     {
@@ -26,14 +34,25 @@ public class PlayerController : MonoBehaviour
     }
     public void OnDisable()
     {
-        Move.Disable();
-        Attack.Disable();
-        Attack.performed -= OnAttack;
+        if (Move != null)
+            Move.Disable();
+
+        if (Attack != null)
+        {
+            Attack.Disable();
+            Attack.performed -= OnAttack;
+        }
     }
+
 
     void Start()
     {
         rb = GetComponentInParent<Rigidbody2D>();
+        currentHealth = MaxHealth;
+        if (healthBar)
+        {
+            healthBar.SetMaxHealth(MaxHealth);
+        }
     }
 
     void Update()
@@ -50,6 +69,21 @@ public class PlayerController : MonoBehaviour
         {
             // Handle attack logic here
             Debug.Log("Attack performed");
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(20);
+            Debug.Log("Took damage from enemy collision");
         }
     }
 }
