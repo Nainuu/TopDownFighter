@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,14 @@ public class PlayerController : MonoBehaviour
     public int currentHealth;
 
     public PlayerHealth healthBar;
+
+    // animations
+    public Animator animator;
+    public AttackManager attackManager;
+
+    // Track the current facing direction
+    private Vector3 currentFacing = Vector3.right;
+
 
 
 
@@ -62,6 +71,18 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(MoveInput.x * Speed, MoveInput.y * Speed);
+        animator.SetFloat("speed", Mathf.Abs(MoveInput.magnitude));
+        // direction of player
+        if (MoveInput.x > 0.01f)
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);         // Facing right
+            currentFacing = Vector3.right;
+        }
+        else if (MoveInput.x < -0.01f)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);       // Facing left (rotated around Y)
+            currentFacing = Vector3.left;
+        }
     }
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -69,6 +90,8 @@ public class PlayerController : MonoBehaviour
         {
             // Handle attack logic here
             Debug.Log("Attack performed");
+            animator.SetTrigger("AttackMelee");
+            
         }
     }
 
@@ -76,6 +99,12 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+        if (currentHealth == 0)
+        {
+            animator.SetTrigger("Die");
+            this.enabled = false;
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -83,7 +112,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(20);
-            Debug.Log("Took damage from enemy collision");
+            animator.SetTrigger("Hurt");
         }
     }
 }
