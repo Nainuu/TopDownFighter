@@ -90,7 +90,8 @@ public class PlayerController : MonoBehaviour
         {
             // Handle attack logic here
             Debug.Log("Attack performed");
-            animator.SetTrigger("AttackMelee");
+            animator.SetTrigger("AttackPistol");
+            attackManager.shoot();
             
         }
     }
