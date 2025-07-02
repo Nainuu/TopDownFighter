@@ -1,9 +1,11 @@
+using System;
 using JetBrains.Annotations;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
+[Serializable]
 public class PlayerController : MonoBehaviour
 {
     public InputSystem_Actions PlayerControls;
@@ -92,28 +94,29 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Attack performed");
             animator.SetTrigger("AttackPistol");
             attackManager.shoot();
-            
+
         }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        animator.SetTrigger("Hurt");
         healthBar.SetHealth(currentHealth);
         if (currentHealth == 0)
         {
             animator.SetTrigger("Die");
             this.enabled = false;
-            rb.linearVelocity = Vector2.zero;
+            // rb.linearVelocity = Vector2.zero;
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            TakeDamage(20);
-            animator.SetTrigger("Hurt");
-        }
-    }
+    // public void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     if (collision.gameObject.CompareTag("Enemy"))
+    //     {
+    //         // TakeDamage(20);
+            
+    //     }
+    // }
 }
