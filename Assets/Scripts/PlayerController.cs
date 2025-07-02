@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     // animations
     public Animator animator;
+    public Animator enAnimator;
     public AttackManager attackManager;
 
     // Track the current facing direction

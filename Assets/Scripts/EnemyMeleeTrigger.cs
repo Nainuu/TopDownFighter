@@ -11,8 +11,9 @@ public class EnemyMeleeTrigger : MonoBehaviour
 
     void Start()
     {
-        Enemy enemy = GetComponent<Enemy>();
+        enemy = GetComponent<Enemy>();
     }
+
 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -26,10 +27,7 @@ public class EnemyMeleeTrigger : MonoBehaviour
             if (PlayerController != null)
             {
                 PlayerController.TakeDamage(damage);
-                if (enemy)
-                {   
-                    animator.SetTrigger("MeleeAttack");
-                }
+                animator.SetTrigger("MeleeAttack");
                 Debug.Log("Enemy melee attack hit the player!");
             }
 
@@ -40,7 +38,11 @@ public class EnemyMeleeTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             hasAttacked = false; // Reset for next attack
-            animator.SetTrigger("MeleeOff");
+            // if (animator != null && animator.gameObject != null)
+            // {
+                // animator.SetTrigger("MeleeOff");
+                Debug.Log("melee off");
+            // }
         }
     }
 }

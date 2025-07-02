@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float EnemyHealth = 40f;
     public GameObject deathEffect;
     public AIPath aIPath;
+    public bool isDead = false;
 
     void Update()
     {
@@ -51,11 +52,19 @@ public class Enemy : MonoBehaviour
         }
 
         // Delay destruction so animation or effect can play
-        // aIPath.canMove = false;
-        // aIPath.enabled = false;
-        // GetComponent<Collider2D>().enabled = false;
-        // GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        aIPath.canMove = false;
+        aIPath.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         Destroy(gameObject, 0.5f);
+        isDead = true;
+
+        EnemyMeleeTrigger meleeTrigger = GetComponentInChildren<EnemyMeleeTrigger>();
+        if (meleeTrigger != null)
+        {
+            meleeTrigger.enabled = false;
+        }
+
 
     }
 
