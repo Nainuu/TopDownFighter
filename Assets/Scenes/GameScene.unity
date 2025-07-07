@@ -167,6 +167,7 @@ MonoBehaviour:
   damage: 10
   hasAttacked: 0
   animator: {fileID: 1438236993}
+  enemy: {fileID: 1438236998}
 --- !u!58 &320388499
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -732,6 +733,7 @@ MonoBehaviour:
   currentHealth: 0
   healthBar: {fileID: 1064806774}
   animator: {fileID: 0}
+  enAnimator: {fileID: 0}
   attackManager: {fileID: 0}
 --- !u!212 &722500425
 SpriteRenderer:
@@ -1523,6 +1525,7 @@ MonoBehaviour:
   EnemyHealth: 20
   deathEffect: {fileID: 4607932730444116111, guid: d2ca38ad9a452ae49813141443a7ba57, type: 3}
   aIPath: {fileID: 1563158718}
+  isDead: 0
 --- !u!1 &1450178230
 GameObject:
   m_ObjectHideFlags: 0
@@ -1991,6 +1994,7 @@ MonoBehaviour:
   currentHealth: 0
   healthBar: {fileID: 1064806774}
   animator: {fileID: 1755516672}
+  enAnimator: {fileID: 0}
   attackManager: {fileID: 1755516674}
 --- !u!212 &1755516670
 SpriteRenderer:

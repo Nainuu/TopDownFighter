@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public GameObject deathEffect;
     public AIPath aIPath;
     public bool isDead = false;
+    public GameObject enObject;
 
     void Update()
     {
@@ -56,7 +57,7 @@ public class Enemy : MonoBehaviour
         aIPath.enabled = false;
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-        Destroy(gameObject, 0.5f);
+        Destroy(enObject, 0.5f);
         isDead = true;
 
         EnemyMeleeTrigger meleeTrigger = GetComponentInChildren<EnemyMeleeTrigger>();

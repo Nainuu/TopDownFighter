@@ -22,27 +22,35 @@ public class EnemyMeleeTrigger : MonoBehaviour
         {
             hasAttacked = true;
 
-            // Access PlayerHealth script and damage player
-            PlayerController PlayerController = other.GetComponent<PlayerController>();
-            if (PlayerController != null)
+            PlayerController playerController = other.GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                PlayerController.TakeDamage(damage);
-                animator.SetTrigger("MeleeAttack");
+                playerController.TakeDamage(damage);
+
+                if (animator != null)  // ✅ Check if animator still exists
+                {
+                    animator.SetTrigger("MeleeAttack");
+                }
+                else
+                {
+                    Debug.LogWarning("Animator is missing or destroyed.");
+                }
+
                 Debug.Log("Enemy melee attack hit the player!");
             }
-
         }
     }
+
 
     private void OnTriggerExit2D(Collider2D other) {
         if (other.CompareTag("Player"))
         {
             hasAttacked = false; // Reset for next attack
-            // if (animator != null && animator.gameObject != null)
-            // {
-                // animator.SetTrigger("MeleeOff");
+            if (animator != null && animator.gameObject != null)
+            {
+                animator.SetTrigger("MeleeOff");
                 Debug.Log("melee off");
-            // }
+            }
         }
     }
 }
