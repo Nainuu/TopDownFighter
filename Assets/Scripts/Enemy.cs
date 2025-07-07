@@ -17,11 +17,11 @@ public class Enemy : MonoBehaviour
     {
         if (aIPath.desiredVelocity.x >= 0.01f)
         {
-            transform.localScale = new Vector3(4.677f, 4.677f, 4.677f);
+            transform.localScale = new Vector3(3.3f, 3.3f, 3.3f);
         }
         else if (aIPath.desiredVelocity.x <= 0.01f)
         {
-            transform.localScale = new Vector3(-4.677f, 4.677f, 4.677f);
+            transform.localScale = new Vector3(-3.3f, 3.3f, 3.3f);
         }
 
         float speed = aIPath.desiredVelocity.magnitude;
