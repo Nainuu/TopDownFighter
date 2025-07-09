@@ -205,6 +205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1746225378261165879}
+  targetRoom: {fileID: 0}
+  roomManager: {fileID: 0}
 --- !u!61 &126384321028017184
 BoxCollider2D:
   m_ObjectHideFlags: 0
