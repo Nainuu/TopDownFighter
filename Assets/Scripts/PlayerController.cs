@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     private InputAction Move;
     private InputAction Attack;
-    // private InputAction Pause;
+    private InputAction Pause;
 
     public int MaxHealth = 100;
     public int currentHealth;
@@ -45,10 +45,6 @@ public class PlayerController : MonoBehaviour
         Move.Enable();
         Attack.Enable();
         Attack.performed += OnAttack;
-        // Pause = PlayerControls.Player.Pause;
-        // Pause.Enable();
-        // Pause.performed += OnPause;
-
     }
     public void OnDisable()
     {
@@ -60,11 +56,7 @@ public class PlayerController : MonoBehaviour
             Attack.Disable();
             Attack.performed -= OnAttack;
         }
-        // if (Pause != null)
-        // {
-        //     Pause.Disable();
-        //     Pause.performed -= OnPause;
-        // }
+
     }
 
 
@@ -124,16 +116,18 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Die");
             this.enabled = false;
-            // rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero; // Stop the player movement
+            uiManager.ShowGameOverMenu();
         }
     }
+    
 
     // public void OnCollisionEnter2D(Collision2D collision)
     // {
     //     if (collision.gameObject.CompareTag("Enemy"))
     //     {
     //         // TakeDamage(20);
-            
+
     //     }
     // }
 }

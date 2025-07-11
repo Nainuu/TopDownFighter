@@ -5,8 +5,10 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
     private List<string> clearedRooms = new List<string>();
-    public GameObject level1Blockers;
-    public GameObject level2Blockers;
+    public LevelBlocker level1Blocker;
+    public LevelBlocker level2Blocker;
+
+    public GameObject UIManager;
 
     private void Awake()
     {
@@ -16,6 +18,7 @@ public class RoomManager : MonoBehaviour
             Destroy(gameObject); // Ensure only one instance exists
     }
 
+
     public void EnterRoom(GameObject targetRoom)
     {
         if (targetRoom == null)
@@ -23,7 +26,7 @@ public class RoomManager : MonoBehaviour
             Debug.LogWarning("Target room is null!");
             return;
         }
-
+        UIManager.GetComponent<UiManagment>().ShowRoomNumber(targetRoom.name);
         var logic = targetRoom.GetComponent<RoomLogic>();
         if (logic != null)
             logic.OnRoomEnter();
@@ -33,6 +36,7 @@ public class RoomManager : MonoBehaviour
     public void RoomCleared(string roomName)
     {
         Debug.Log("Room cleared: " + roomName);
+
         if (!clearedRooms.Contains(roomName))
         {
             clearedRooms.Add(roomName);
@@ -43,15 +47,29 @@ public class RoomManager : MonoBehaviour
             Debug.LogWarning("Room already cleared: " + roomName);
         }
 
-        if (clearedRooms.Count >= 3 && clearedRooms.Contains("Room3"))
+        // Check Level 1: Room1, Room2, Room3
+        if (clearedRooms.Contains("Room1") &&
+            clearedRooms.Contains("Room2") &&
+            clearedRooms.Contains("Room3") &&
+            !level1Blocker.isCleared)
         {
-            Debug.Log("level one cleard");
-            level1Blockers.SetActive(false);
-        } else if (clearedRooms.Count >= 5 && clearedRooms.Contains("Room5"))
+            Debug.Log("Level 1 cleared");
+            level1Blocker.isCleared = true;
+            level1Blocker.gameObject.SetActive(false);
+            UIManager.GetComponent<UiManagment>().ShowRoomUnlockDisplay();
+        }
+
+        // Check Level 2: Room4, Room5
+        if (clearedRooms.Contains("Room4") &&
+            clearedRooms.Contains("Room5") &&
+            !level2Blocker.isCleared)
         {
-            Debug.Log("level two cleard");
-            level2Blockers.SetActive(false);
+            Debug.Log("Level 2 cleared");
+            level2Blocker.isCleared = true;
+            level2Blocker.gameObject.SetActive(false);
+            UIManager.GetComponent<UiManagment>().ShowRoomUnlockDisplay();
         }
     }
+
 
 }

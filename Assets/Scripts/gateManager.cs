@@ -23,6 +23,7 @@ public class gateManager : MonoBehaviour
         animator.SetTrigger("GateOpen");
         Debug.Log("Gate opening...");
         RoomManager.Instance.EnterRoom(targetRoom);
+        
         // wait 1 second before closing
         Invoke(nameof(CloseGate), 1f);
     }
