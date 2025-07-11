@@ -8,12 +8,14 @@ using UnityEngine.Rendering;
 [Serializable]
 public class PlayerController : MonoBehaviour
 {
+    public UiManagment uiManager;
     public InputSystem_Actions PlayerControls;
     public Vector2 MoveInput;
     public float Speed = 5f;
     public Rigidbody2D rb;
     private InputAction Move;
     private InputAction Attack;
+    // private InputAction Pause;
 
     public int MaxHealth = 100;
     public int currentHealth;
@@ -43,6 +45,10 @@ public class PlayerController : MonoBehaviour
         Move.Enable();
         Attack.Enable();
         Attack.performed += OnAttack;
+        // Pause = PlayerControls.Player.Pause;
+        // Pause.Enable();
+        // Pause.performed += OnPause;
+
     }
     public void OnDisable()
     {
@@ -54,6 +60,11 @@ public class PlayerController : MonoBehaviour
             Attack.Disable();
             Attack.performed -= OnAttack;
         }
+        // if (Pause != null)
+        // {
+        //     Pause.Disable();
+        //     Pause.performed -= OnPause;
+        // }
     }
 
 
@@ -96,6 +107,11 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("AttackPistol");
             attackManager.shoot();
 
+        }
+        if (uiManager.startMenu.activeSelf)
+        {
+            uiManager.startMenu.SetActive(false);
+            Time.timeScale = 1f; // Resume the game
         }
     }
 
