@@ -1,0 +1,58 @@
+✅ Complete Room-to-Room Combat System Checklist
+
+🧱 ROOM SYSTEM
+	1.	Create a RoomManager.cs to manage:
+	•	Enemies in the room
+	•	Room activation
+	•	Gate logic
+	2.	Detect player entering a room
+	3.	Only the current room should be active
+	4.	Confine camera to the current room using Cinemachine Confiner
+	5.	Show room label on screen (optional)
+
+⸻
+
+🧟 ENEMY SYSTEM
+✅	6.	Add enemies to each room
+	7.	Enemies stay inactive until player enters their room
+	8.	Enemies are confined within their room
+	9.	Add enemy health and death logic
+	10.	Notify RoomManager when enemy dies
+	11.	Give player health when enemy is defeated
+	12.	Play enemy death animation/sound
+	13.	Create a boss enemy with:
+	•	More health
+	•	Unique behavior/attack
+	•	Different appearance
+	•	Optional boss health UI
+
+⸻
+
+🚪 GATE LOGIC
+	14.	Gates auto-close when player enters a room with enemies
+	15.	Gates stay closed while enemies are alive
+	16.	Gates auto-open once all enemies in the room are defeated
+	17.	Add gate animations or locking visuals
+	18.	Play gate opening sound or FX
+
+⸻
+
+❤ PLAYER SYSTEM
+	19.	Ensure player has a health system
+	20.	Display player health in UI
+	21.	Heal player slightly when an enemy dies (e.g. +1 heart or +small amount)
+	22.	Add damage response animation or flash (optional)
+
+⸻
+
+✨ POLISH & FX (Optional)
+	23.	Add entry animation when entering a room
+	24.	Add spawn effect when enemy appears
+	25.	Add sound effects for:
+
+	•	Enemy attacks
+	•	Enemy death
+	•	Gate opening/closing
+
+	26.	Add visual indicator when room is cleared
+	27.	Add minimap or breadcrumbs system (optional)

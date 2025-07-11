@@ -1,37 +1,57 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
-    [SerializeField] private List<GameObject> rooms;
-    private Dictionary<string, GameObject> roomDict = new();
-    void Start()
+    private List<string> clearedRooms = new List<string>();
+    public GameObject level1Blockers;
+    public GameObject level2Blockers;
+
+    private void Awake()
     {
-
-    }
-
-private void Awake()
-    {
-        if (Instance == null) Instance = this;
-
-        foreach (var room in rooms)
-        {
-            roomDict[room.name] = room;
-            room.SetActive(false); // Start with all rooms off
-        }
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject); // Ensure only one instance exists
     }
 
     public void EnterRoom(GameObject targetRoom)
-{
-    foreach (var room in roomDict.Values)
-        room.SetActive(false);
+    {
+        if (targetRoom == null)
+        {
+            Debug.LogWarning("Target room is null!");
+            return;
+        }
 
-    if (roomDict.ContainsValue(targetRoom))
-        targetRoom.SetActive(true);
-    else
-        Debug.LogWarning("Room not found in dictionary: " + targetRoom.name);
-}
+        var logic = targetRoom.GetComponent<RoomLogic>();
+        if (logic != null)
+            logic.OnRoomEnter();
+        else
+            Debug.LogWarning("No RoomLogic script found on target room.");
+    }
+    public void RoomCleared(string roomName)
+    {
+        Debug.Log("Room cleared: " + roomName);
+        if (!clearedRooms.Contains(roomName))
+        {
+            clearedRooms.Add(roomName);
+            Debug.Log("Added to cleared rooms: " + roomName);
+        }
+        else
+        {
+            Debug.LogWarning("Room already cleared: " + roomName);
+        }
+
+        if (clearedRooms.Count >= 3 && clearedRooms.Contains("Room3"))
+        {
+            Debug.Log("level one cleard");
+            level1Blockers.SetActive(false);
+        } else if (clearedRooms.Count >= 5 && clearedRooms.Contains("Room5"))
+        {
+            Debug.Log("level two cleard");
+            level2Blockers.SetActive(false);
+        }
+    }
+
 }
