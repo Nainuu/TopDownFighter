@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth -= damage;
         animator.SetTrigger("Hurt");
+        FindFirstObjectByType<AudioManager>()?.Play("PlayerHit");
         healthBar.SetHealth(currentHealth);
         if (currentHealth == 0)
         {

@@ -16,6 +16,8 @@ public class LevelBlocker : MonoBehaviour
         {
             Debug.Log($"Player collided with blocker for {level}");
             uiManager.ShowRoomLockDisplay();
+            FindFirstObjectByType<AudioManager>()?.Play("LvlLocked");
+
         }
     }
 }

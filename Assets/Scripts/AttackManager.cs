@@ -21,5 +21,6 @@ public class AttackManager : MonoBehaviour
         GameObject flash = Instantiate(muzzleFlashPrefab, firePoint.position, firePoint.rotation);
         Destroy(flash, 0.1f);
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        FindFirstObjectByType<AudioManager>()?.Play("PlayerFire");
     }
 }

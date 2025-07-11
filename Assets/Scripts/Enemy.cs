@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         EnemyHealth -= damage;
+        FindFirstObjectByType<AudioManager>()?.Play("EnDamage");
         Debug.Log("Enemy took damage, health now: " + EnemyHealth);
         if (EnemyHealth <= 0)
         {
@@ -43,6 +44,8 @@ public class Enemy : MonoBehaviour
         {
             GameObject effect = Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(effect, .1f);
+            FindFirstObjectByType<AudioManager>()?.Play("EnDie");
+
 
         }
 
@@ -65,7 +68,7 @@ public class Enemy : MonoBehaviour
         {
             meleeTrigger.enabled = false;
         }
-
+        
 
     }
 

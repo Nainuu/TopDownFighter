@@ -57,6 +57,7 @@ public class RoomManager : MonoBehaviour
             level1Blocker.isCleared = true;
             level1Blocker.gameObject.SetActive(false);
             UIManager.GetComponent<UiManagment>().ShowRoomUnlockDisplay();
+            FindFirstObjectByType<AudioManager>()?.Play("LvlUnlocked");
         }
 
         // Check Level 2: Room4, Room5
@@ -68,6 +69,8 @@ public class RoomManager : MonoBehaviour
             level2Blocker.isCleared = true;
             level2Blocker.gameObject.SetActive(false);
             UIManager.GetComponent<UiManagment>().ShowRoomUnlockDisplay();
+            FindFirstObjectByType<AudioManager>()?.Play("LvlUnlocked");
+
         }
     }
 
