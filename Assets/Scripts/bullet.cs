@@ -15,13 +15,25 @@ public class bullet : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
 
-        Debug.Log("collision with en detected " + collision.name);
-        Enemy enemy = collision.GetComponent<Enemy>();
+            Debug.Log("collision with en detected " + collision.name);
+            Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(10);
             }
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
+
+        if (collision.CompareTag("Boss"))
+        {
+
+            Debug.Log("collision with boss detected " + collision.name);
+            Boss boss = collision.GetComponent<Boss>();
+            if (boss != null)
+            {
+                boss.TakeDamage(1);
+            }
+            Destroy(gameObject);
         }
 
     }

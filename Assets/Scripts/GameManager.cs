@@ -1,7 +1,9 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[Serializable]
 public class GameManager : MonoBehaviour
 {
     public GameObject EquipmentPanel;
@@ -50,5 +52,13 @@ public class GameManager : MonoBehaviour
     public void OpenSettings()
     {
         SceneManager.LoadScene("SettingsScene");
+    }
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

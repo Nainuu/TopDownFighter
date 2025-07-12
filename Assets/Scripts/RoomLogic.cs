@@ -25,10 +25,16 @@ public class RoomLogic : MonoBehaviour
     {
         // Activate blockers when room is entered
         foreach (var blocker in blockers)
+        {
             blocker.SetActive(true);
+            Debug.Log("Blocker activated: " + blocker.name);
+        }
         foreach (var enemy in enemies)
             if (enemy != null)
+            {
                 enemy.SetActive(true);
+                Debug.Log("Enemy activated: " + enemy.name);
+            }
 
         Debug.Log("Entered Room: " + name);
     }

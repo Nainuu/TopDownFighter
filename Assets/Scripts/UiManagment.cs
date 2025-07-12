@@ -76,11 +76,15 @@ public class UiManagment : MonoBehaviour
         gameOverMenu.SetActive(false);
         winMenu.SetActive(false);
         Time.timeScale = 0f; // Pause the game
+        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
+
     }
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f; // Resume the game
+        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
+
     }
     public void ShowGameOverMenu()
     {
