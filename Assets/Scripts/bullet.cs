@@ -31,7 +31,7 @@ public class bullet : MonoBehaviour
             Boss boss = collision.GetComponent<Boss>();
             if (boss != null)
             {
-                boss.TakeDamage(1);
+                boss.TakeDamage(5);
             }
             Destroy(gameObject);
         }

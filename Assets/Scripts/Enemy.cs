@@ -12,6 +12,12 @@ public class Enemy : MonoBehaviour
     public AIPath aIPath;
     public bool isDead = false;
     public GameObject enObject;
+    // public PlayerController playercontroller;
+
+    // void Start()
+    // {
+    //     playercontroller = GetComponent
+    // }
 
     void Update()
     {
@@ -68,7 +74,13 @@ public class Enemy : MonoBehaviour
         {
             meleeTrigger.enabled = false;
         }
-        
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        if (player != null)
+        {
+            player.gainHealth(10);
+        } else {
+            Debug.Log("player not detected and health not increased");
+        }
 
     }
 

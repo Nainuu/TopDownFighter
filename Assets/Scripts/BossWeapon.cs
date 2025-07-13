@@ -4,59 +4,79 @@ using UnityEngine;
 [Serializable]
 public class BossWeapon : MonoBehaviour
 {
-    public int damage = 10;
-    public bool hasAttacked = false;
     public Animator animator;
-    public Boss boss;
+    public int damage = 10;
 
-    void Start()
+    private bool isAttacking = false;
+    private bool hasHit = false;
+    private Collider2D playerInRange;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        boss = GetComponent<Boss>();
+        if (collision.CompareTag("Player") && !isAttacking)
+        {
+            Debug.Log("Player detected by boss weapon: " + collision.name);
+            playerInRange = collision;
+
+            string selectedAttack = ChooseRandomAttack();
+            if (selectedAttack == "Attk1")
+            {
+                animator.SetTrigger("Attk1");
+                FindFirstObjectByType<AudioManager>()?.Play("BossAttk1");
+
+            }
+            else if (selectedAttack == "Attk2")
+            {
+                animator.SetTrigger("Attk2");
+                FindFirstObjectByType<AudioManager>()?.Play("BossAttk2");
+            }
+            else
+            {
+                Debug.LogWarning("No valid attack selected, using default.");
+                animator.SetTrigger("Attk1");
+            }
+
+            FindFirstObjectByType<AudioManager>()?.Play("PlayerHit");
+
+
+            StartCoroutine(DelayedAttack());
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.CompareTag("Player") && !hasAttacked)
+        if (collision.CompareTag("Player"))
         {
-            hasAttacked = true;
+            hasHit = false;
+            playerInRange = null;
+        }
+    }
 
-            PlayerController playerController = other.GetComponent<PlayerController>();
-            if (playerController != null)
+    private System.Collections.IEnumerator DelayedAttack()
+    {
+        isAttacking = true;
+        hasHit = false;
+
+        yield return new WaitForSeconds(0.15f); // Delay to sync with animation swing
+
+        if (playerInRange != null && !hasHit)
+        {
+            PlayerController player = playerInRange.GetComponent<PlayerController>();
+            if (player != null)
             {
-                playerController.TakeDamage(damage);
-
-                if (animator != null)
-                {
-                    string selectedAttack = GetAttackBasedOnHealth(playerController);
-                    animator.SetTrigger(selectedAttack);
-
-                    Debug.Log($"Boss used {selectedAttack} based on player's health.");
-                }
-                else
-                {
-                    Debug.LogWarning("Animator is missing or destroyed.");
-                }
+                player.TakeDamage(damage);
+                Debug.Log("Player hit by boss during attack window.");
+                hasHit = true;
             }
         }
+
+        yield return new WaitForSeconds(0.25f); // Wait for animation to finish (~0.4s total)
+        isAttacking = false;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private string ChooseRandomAttack()
     {
-        if (other.CompareTag("Player"))
-        {
-            hasAttacked = false;
-        }
-    }
-
-    private string GetAttackBasedOnHealth(PlayerController player)
-    {
-        float healthPercent = (float)player.currentHealth / player.MaxHealth;
-
-        if (healthPercent > 0.66f)
-            return "Attk2"; // Strong attack
-        else if (healthPercent < 0.33f)
-            return "Attk3"; // Finisher
-        else
-            return "Attk1"; // Normal attack
+        int random = UnityEngine.Random.Range(0, 2);
+        return random == 0 ? "Attk1" : "Attk2";
     }
 }

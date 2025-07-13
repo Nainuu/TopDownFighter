@@ -121,6 +121,16 @@ public class PlayerController : MonoBehaviour
             uiManager.ShowGameOverMenu();
         }
     }
+    public void gainHealth(int amount)
+    {
+        if (currentHealth <= MaxHealth)
+        {
+            currentHealth += amount;
+            healthBar.SetHealth(currentHealth);
+            Debug.Log("player gained health");
+            FindFirstObjectByType<AudioManager>()?.Play("gainHealth");
+        }
+    }
     
 
     // public void OnCollisionEnter2D(Collision2D collision)

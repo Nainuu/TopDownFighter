@@ -23,4 +23,5 @@ public class PlayerHealth : MonoBehaviour
         slider.value = health;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
+    
 }

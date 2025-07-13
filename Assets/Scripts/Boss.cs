@@ -11,6 +11,11 @@ public class Boss : MonoBehaviour
     public bool isDead = false;
     public GameObject bossObject;
     public BossHealth bossHealthUI;
+    public GameObject deathEffect;
+    public Animator dieAnimator;
+    public GameObject BossMainObject;
+    public PlayerController playerController;
+    private int healthReward = 75;
 
     void Start()
     {
@@ -30,9 +35,9 @@ public class Boss : MonoBehaviour
         {
             transform.localScale = new Vector3(3.3f, 3.3f, 3.3f);
         }
-
+        if (isDead) return;
         float speed = aIPath.desiredVelocity.magnitude;
-        animator.SetFloat("Enspeed", speed);
+        animator.SetFloat("Speed", speed);
     }
 
     public void TakeDamage(int damage)
@@ -43,7 +48,7 @@ public class Boss : MonoBehaviour
         BossHealth = Mathf.Clamp(BossHealth, 0, 9999);
 
         // Uncomment this if you have an AudioManager:
-        // FindFirstObjectByType<AudioManager>()?.Play("EnDamage");
+        FindFirstObjectByType<AudioManager>()?.Play("EnDamage");
 
         if (bossHealthUI != null)
         {
@@ -52,7 +57,18 @@ public class Boss : MonoBehaviour
 
         Debug.Log("Boss took damage, health now: " + BossHealth);
 
-        if (BossHealth <= 0)
+        if (BossHealth <= healthReward && healthReward > 0)
+    {
+        if (playerController != null)
+        {
+            playerController.gainHealth(10); // Heal 10 or any value you want
+            Debug.Log("Player healed on boss threshold: " + healthReward);
+        }
+
+        healthReward -= 25; // Set next threshold down
+    }
+
+        if (BossHealth <= 10)
         {
             Die();
         }
@@ -63,18 +79,27 @@ public class Boss : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
-
-        if (animator != null)
+        if (deathEffect != null)
         {
-            // animator.SetTrigger("enDie"); // Optional: add a death animation
+            deathEffect.SetActive(true);
+            FindFirstObjectByType<AudioManager>()?.Play("BossDeath");
+
+            // if (dieAnimator != null)
+            // {
+            //     dieAnimator.SetTrigger("BossDied"); // Optional: add a death animation
+            // }
+            Destroy(deathEffect, 1.4f);
+            
         }
+
 
         aIPath.canMove = false;
         aIPath.enabled = false;
 
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-
-        Destroy(bossObject, 0.5f); // Optional: destroy the boss visuals
+        bossObject.SetActive(false);
+        Destroy(BossMainObject, 2f); // Optional: destroy the boss visuals
+        bossHealthUI.gameObject.SetActive(false);
     }
 }
