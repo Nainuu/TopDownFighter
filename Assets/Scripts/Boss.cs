@@ -16,6 +16,7 @@ public class Boss : MonoBehaviour
     public GameObject BossMainObject;
     public PlayerController playerController;
     private int healthReward = 75;
+    public UiManagment uiManagment;
 
     void Start()
     {
@@ -58,15 +59,15 @@ public class Boss : MonoBehaviour
         Debug.Log("Boss took damage, health now: " + BossHealth);
 
         if (BossHealth <= healthReward && healthReward > 0)
-    {
-        if (playerController != null)
         {
-            playerController.gainHealth(10); // Heal 10 or any value you want
-            Debug.Log("Player healed on boss threshold: " + healthReward);
-        }
+            if (playerController != null)
+            {
+                playerController.gainHealth(10); // Heal 10 or any value you want
+                Debug.Log("Player healed on boss threshold: " + healthReward);
+            }
 
-        healthReward -= 25; // Set next threshold down
-    }
+            healthReward -= 25; // Set next threshold down
+        }
 
         if (BossHealth <= 10)
         {
@@ -83,13 +84,14 @@ public class Boss : MonoBehaviour
         {
             deathEffect.SetActive(true);
             FindFirstObjectByType<AudioManager>()?.Play("BossDeath");
+            Invoke(nameof(ShowWinMenuDelayed), 2f);
 
             // if (dieAnimator != null)
             // {
             //     dieAnimator.SetTrigger("BossDied"); // Optional: add a death animation
             // }
             Destroy(deathEffect, 1.4f);
-            
+
         }
 
 
@@ -101,5 +103,17 @@ public class Boss : MonoBehaviour
         bossObject.SetActive(false);
         Destroy(BossMainObject, 2f); // Optional: destroy the boss visuals
         bossHealthUI.gameObject.SetActive(false);
+
+    }
+    private void ShowWinMenuDelayed()
+    {
+        if (uiManagment != null)
+        {
+            uiManagment.ShowWinMenu();
+        }
+        else
+        {
+            Debug.LogWarning("UiManagment reference is not set.");
+        }
     }
 }

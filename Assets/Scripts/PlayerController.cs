@@ -40,6 +40,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnEnable()
     {
+        if (PlayerControls == null)
+        {
+            Debug.LogError("PlayerControls is not assigned!");
+            return;
+        }
         Move = PlayerControls.Player.Move;
         Attack = PlayerControls.Player.Attack;
         Move.Enable();

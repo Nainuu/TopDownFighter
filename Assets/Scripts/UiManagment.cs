@@ -3,45 +3,44 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-
 [Serializable]
 public class UiManagment : MonoBehaviour
 {
+    [Header("Menus")]
     public GameObject pauseMenu;
     public GameObject gameOverMenu;
     public GameObject winMenu;
     public GameObject startMenu;
-    public InputSystem_Actions PlayerControls;
-    public InputAction Pause;
+
+    [Header("Room UI")]
     public GameObject roomNoDisplay;
     public GameObject RoomLockDisplay;
     public GameObject RoomUnlockDisplay;
-    public void Awake()
+
+    [Header("Input")]
+    public InputSystem_Actions PlayerControls;
+    public InputAction Pause;
+
+
+    private void Awake()
     {
         PlayerControls = new InputSystem_Actions();
     }
-    void start()
+
+    private void Start()
     {
-        // Initialize the UI manager
-        pauseMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
-        winMenu.SetActive(false);
-        startMenu.SetActive(true);
+        // Show the start menu at the beginning
+        ShowStartMenu();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         Pause = PlayerControls.Player.Pause;
         Pause.Enable();
         Pause.performed += OnPause;
     }
 
-    void Start()
-    {
-        // Show the start menu at the beginning
-        ShowStartMenu();
-    }
-    void OnDisable()
+    private void OnDisable()
     {
         if (Pause != null)
         {
@@ -49,9 +48,11 @@ public class UiManagment : MonoBehaviour
             Pause.performed -= OnPause;
         }
     }
+
     private void OnPause(InputAction.CallbackContext context)
     {
         Debug.Log("Pause button pressed");
+
         if (pauseMenu.activeSelf)
         {
             ResumeGame();
@@ -61,69 +62,82 @@ public class UiManagment : MonoBehaviour
             ShowPauseMenu();
         }
     }
+
     public void ShowStartMenu()
     {
         startMenu.SetActive(true);
         pauseMenu.SetActive(false);
         gameOverMenu.SetActive(false);
         winMenu.SetActive(false);
-        Time.timeScale = 0f; // Pause the game
+        Time.timeScale = 0f;
     }
+
     public void ShowPauseMenu()
     {
         pauseMenu.SetActive(true);
         startMenu.SetActive(false);
         gameOverMenu.SetActive(false);
         winMenu.SetActive(false);
-        Time.timeScale = 0f; // Pause the game
-        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
+        Time.timeScale = 0f;
+        PlayerControls.Player.Disable();
+        PlayerControls.UI.Enable();
 
+        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
     }
+
     public void ResumeGame()
     {
+        PlayerControls.Player.Enable();
+        PlayerControls.UI.Disable();
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f; // Resume the game
-        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
+        Time.timeScale = 1f;
 
+        FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
     }
+
     public void ShowGameOverMenu()
     {
         gameOverMenu.SetActive(true);
         pauseMenu.SetActive(false);
         startMenu.SetActive(false);
         winMenu.SetActive(false);
-        Time.timeScale = 0f; // Pause the game
+        Time.timeScale = 0f;
     }
+
     public void ShowWinMenu()
     {
         winMenu.SetActive(true);
         pauseMenu.SetActive(false);
         startMenu.SetActive(false);
         gameOverMenu.SetActive(false);
-        Time.timeScale = 0f; // Pause the game
+        Time.timeScale = 0f;
     }
+
     public void ShowRoomNumber(string roomNumber)
     {
         roomNoDisplay.SetActive(true);
         roomNoDisplay.GetComponentInChildren<TextMeshProUGUI>().text = roomNumber;
     }
+
     public void ShowRoomLockDisplay()
     {
         RoomLockDisplay.SetActive(true);
-        Invoke(nameof(HideRoomLockDisplay), 3f); // Hide after 3 seconds
         RoomUnlockDisplay.SetActive(false);
+        Invoke(nameof(HideRoomLockDisplay), 3f);
+    }
+
+    public void ShowRoomUnlockDisplay()
+    {
+        RoomUnlockDisplay.SetActive(true);
+        RoomLockDisplay.SetActive(false);
+        Invoke(nameof(HideRoomUnlockDisplay), 3f);
     }
 
     private void HideRoomLockDisplay()
     {
         RoomLockDisplay.SetActive(false);
     }
-    public void ShowRoomUnlockDisplay()
-    {
-        RoomUnlockDisplay.SetActive(true);
-        Invoke(nameof(HideRoomUnlockDisplay), 3f); // Hide after 3 seconds
-        RoomLockDisplay.SetActive(false);
-    }
+
     private void HideRoomUnlockDisplay()
     {
         RoomUnlockDisplay.SetActive(false);
