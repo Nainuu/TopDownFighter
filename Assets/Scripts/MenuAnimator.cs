@@ -26,7 +26,7 @@ public class MenuAnimator : MonoBehaviour
         charOverviewStart = charOverview.anchoredPosition;
 
         newGameStart = newGame.anchoredPosition;
-        resumeGameStart = resumeGame.anchoredPosition;
+        // resumeGameStart = resumeGame.anchoredPosition;
         settingsStart = settings.anchoredPosition;
 
         AnimateTopMenu();
@@ -47,7 +47,7 @@ public class MenuAnimator : MonoBehaviour
     void AnimateBottomButtons()
     {
         newGame.anchoredPosition = newGameStart + new Vector2(-600, 0);
-        resumeGame.anchoredPosition = resumeGameStart + new Vector2(-600, 0);
+        // resumeGame.anchoredPosition = resumeGameStart + new Vector2(-600, 0);
         settings.anchoredPosition = settingsStart + new Vector2(-600, 0);
 
         newGame.DOAnchorPos(newGameStart, 1.2f).SetEase(Ease.OutExpo).SetDelay(0.7f);

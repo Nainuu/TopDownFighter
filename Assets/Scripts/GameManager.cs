@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public GameObject CharacterPanel;
     public GameObject GameOverviewPanel;
 
+    // Add a field for PlayerControls
+    public InputSystem_Actions PlayerControls;
+
     void Start()
     {
         GameOverviewPanel.SetActive(true);
@@ -44,9 +47,27 @@ public class GameManager : MonoBehaviour
         Debug.Log("trying to quit");
         Application.Quit();
     }
+    void Awake()
+    {
+        PlayerControls = new InputSystem_Actions();
+        PlayerControls.Enable();
+
+        // // Link to GameManager
+        // GameManager gm = FindObjectOfType<GameManager>();
+        // if (gm != null)
+        // {
+        //     gm.PlayerControls = PlayerControls;
+        // }
+    }
 
     public void OpenNewGame()
     {
+        if (PlayerControls != null)
+        {
+            Debug.Log("Disposing PlayerControls before loading GameScene");
+            PlayerControls.Dispose();
+            PlayerControls = null;
+        }
         SceneManager.LoadScene("GameScene");
     }
     public void OpenSettings()

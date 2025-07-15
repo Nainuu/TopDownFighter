@@ -10,7 +10,7 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public RawImage rawImage;
 
     [Header("Effect Settings")]
-    public float scaleAmount = 1.1f;
+    public float scaleAmount = 1.05f;
     public float duration = 0.2f;
     public Color hoverColor = new Color(0.2f, 0.0313f, 0.0981f, 1f);
 

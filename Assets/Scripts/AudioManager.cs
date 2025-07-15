@@ -21,6 +21,12 @@ public class AudioManager : MonoBehaviour
     }
     void Start()
     {
+        float volume = PlayerPrefs.GetFloat("Volume", 0.75f);
+        foreach (Sound s in sounds)
+        {
+            s.source.volume = volume * s.volume; // scale by individual sound's base volume
+        }
+
         Debug.Log("AudioManager started");
         Play("Background");
     }

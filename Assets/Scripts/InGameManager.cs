@@ -1,23 +1,23 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-
 public class InGameManager : MonoBehaviour
 {
     private InputSystem_Actions PlayerControls;
 
     private void Awake()
-{
-    PlayerControls = new InputSystem_Actions();
-    PlayerControls.Enable();
-
-    // 👇 Assign to the PlayerController
-    var player = FindFirstObjectByType<PlayerController>();
-    if (player != null)
     {
-        player.PlayerControls = PlayerControls;
+        PlayerControls = new InputSystem_Actions();
+        PlayerControls.Enable();
+
+        // 👇 Assign to the PlayerController
+        var player = FindFirstObjectByType<PlayerController>();
+        if (player != null)
+        {
+            player.PlayerControls = PlayerControls;
+        }
     }
-}
 
 
     public void RestartGame()
@@ -62,6 +62,7 @@ public class InGameManager : MonoBehaviour
         Application.Quit();
     }
 
+    [System.Obsolete]
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
@@ -70,6 +71,10 @@ public class InGameManager : MonoBehaviour
         {
             PlayerControls.Disable();
             PlayerControls = null;
+        }
+            foreach (var vcam in FindObjectsOfType<CinemachineCamera>())
+        {
+            Destroy(vcam.gameObject);
         }
 
         SceneManager.LoadScene("WelcomeScene");

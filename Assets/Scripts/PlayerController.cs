@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     // Track the current facing direction
     private Vector3 currentFacing = Vector3.right;
+    public float attackCooldown = 1f; // Time between shots in seconds
+    private float lastAttackTime = -Mathf.Infinity;
 
 
 
@@ -95,22 +97,35 @@ public class PlayerController : MonoBehaviour
             currentFacing = Vector3.left;
         }
     }
+
+
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            // Handle attack logic here
-            Debug.Log("Attack performed");
-            animator.SetTrigger("AttackPistol");
-            attackManager.shoot();
-
-        }
         if (uiManager.startMenu.activeSelf)
         {
             uiManager.startMenu.SetActive(false);
             Time.timeScale = 1f; // Resume the game
+            return; // Don’t attack if the menu was active
+        }
+
+        if (context.performed)
+        {
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                lastAttackTime = Time.time;
+
+                // Attack logic
+                Debug.Log("Attack performed");
+                animator.SetTrigger("AttackPistol");
+                attackManager.shoot();
+            }
+            else
+            {
+                Debug.Log("Attack blocked: still cooling down");
+            }
         }
     }
+
 
     public void TakeDamage(int damage)
     {

@@ -11,9 +11,8 @@ public class VideoManager : MonoBehaviour
     public VideoPlayer videoPlayer;
     void Start()
     {
-        videoPlayer.prepareCompleted += OnPrepared;
-        videoPlayer.Prepare();
         videoPlayer.loopPointReached += EndReached;
+        videoPlayer.Play(); // May avoid buffer pressure
     }
 
     void OnPrepared(VideoPlayer vp)

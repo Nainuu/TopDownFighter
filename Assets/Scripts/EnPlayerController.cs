@@ -6,6 +6,8 @@ public class EnPlayerController : MonoBehaviour
 {
     public Rigidbody2D rb;
     public float speed = 7f;
+    public float baseSpeed = 7f;
+    public float actualSpeed = 7f;
     public Vector2 moveInput;
     public EnPlayerInput EnPlayerControl;
     public InputAction Move;
@@ -36,16 +38,31 @@ public class EnPlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        int difficulty = PlayerPrefs.GetInt("Difficulty", 7);
+        switch (difficulty)
+        {
+            case 0: // Easy
+                actualSpeed = baseSpeed * 0.75f;
+                break;
+            case 1: // Medium
+                actualSpeed = baseSpeed * 1.0f;
+                break;
+            case 2: // Hard
+                actualSpeed = baseSpeed * 1.5f;
+                break;
+        }
     }
 
     void Update()
     {
-        moveInput = Move.ReadValue<Vector2>();
+        // You can add code here if needed
     }
+
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * speed, moveInput.y * speed);
+        rb.linearVelocity = new Vector2(moveInput.x * actualSpeed, moveInput.y * actualSpeed);
     }
+
     private void onFire(InputAction.CallbackContext context)
     {
         Debug.Log("fired na");

@@ -21,32 +21,37 @@ public class UiManagment : MonoBehaviour
     public InputSystem_Actions PlayerControls;
     public InputAction Pause;
 
-
     private void Awake()
     {
         PlayerControls = new InputSystem_Actions();
     }
 
-    private void Start()
-    {
-        // Show the start menu at the beginning
-        ShowStartMenu();
-    }
-
     private void OnEnable()
     {
+        // Setup and enable the Pause input action directly
         Pause = PlayerControls.Player.Pause;
         Pause.Enable();
         Pause.performed += OnPause;
+
+        // Enable other input maps if needed
+        PlayerControls.Player.Enable();
+        PlayerControls.UI.Enable();
     }
 
     private void OnDisable()
     {
         if (Pause != null)
         {
-            Pause.Disable();
             Pause.performed -= OnPause;
+            Pause.Disable();
         }
+
+        PlayerControls.Disable(); // Cleanly disable entire map on exit
+    }
+
+    private void Start()
+    {
+        ShowStartMenu();
     }
 
     private void OnPause(InputAction.CallbackContext context)
@@ -79,16 +84,12 @@ public class UiManagment : MonoBehaviour
         gameOverMenu.SetActive(false);
         winMenu.SetActive(false);
         Time.timeScale = 0f;
-        PlayerControls.Player.Disable();
-        PlayerControls.UI.Enable();
 
         FindFirstObjectByType<AudioManager>()?.Play("UiAnimation");
     }
 
     public void ResumeGame()
     {
-        PlayerControls.Player.Enable();
-        PlayerControls.UI.Disable();
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
 
