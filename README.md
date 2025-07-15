@@ -18,7 +18,7 @@ My 3rd unity project which was created as a learning project to explore Unity's 
 
 ## 🛠️ Built With
 
-- **Unity** 2022.x or later
+- **Unity**
 - **C#**
 - Unity’s **New Input System**
 - Scene Management
